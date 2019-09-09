@@ -113,6 +113,11 @@ public class ReportManager implements Serializable,
         init();
     }
 
+    public String getApplicationHeader() {
+
+        return "Report Management";
+    }
+
     /**
      * Gets the SystemManager object as a session bean.
      *
@@ -532,7 +537,7 @@ public class ReportManager implements Serializable,
         this.longProcessProgress = 0;
         this.columnsToExclude = "";
         this.reportCategory = "Job";
-        
+
         getSystemManager().addSingleLoginActionListener(this);
         getSystemManager().addSingleSearchActionListener(this);
     }
@@ -867,7 +872,7 @@ public class ReportManager implements Serializable,
             if (getSelectedReport().getUsePackagedReportFileTemplate()) {
                 stream = analyticalServicesReportFileInputStream(em, new File(getClass().getClassLoader().
                         getResource("/reports/" + getSelectedReport().getReportFileTemplate()).getFile()),
-                        getReportingDepartment1().getId()); 
+                        getReportingDepartment1().getId());
             } else {
                 stream = analyticalServicesReportFileInputStream(em, new File(getSelectedReport().getReportFileTemplate()),
                         getReportingDepartment1().getId());
@@ -1704,23 +1709,19 @@ public class ReportManager implements Serializable,
 
     @Override
     public void doLogin() {
-        
-        initDashboard();
-        initMainTabView();  
-    }
-    
-     private void initDashboard() {
 
-        if (getUser().getModules().getFinancialAdminModule()) {
-            getSystemManager().getDashboard().openTab("Report Management");
-        }
+        initDashboard();
+        initMainTabView();
+    }
+
+    private void initDashboard() {
 
     }
 
     private void initMainTabView() {
 
-        if (getUser().getModules().getFinancialAdminModule()) {
-            getMainTabView().openTab("Financial Administration");
+        if (getUser().getModules().getAdminModule()) {
+            getMainTabView().openTab("Report templates");
         }
 
     }
