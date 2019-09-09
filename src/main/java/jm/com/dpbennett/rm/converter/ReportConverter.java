@@ -22,26 +22,26 @@ package jm.com.dpbennett.rm.converter;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;
-import jm.com.dpbennett.business.entity.Currency;
+import jm.com.dpbennett.business.entity.Report;
 import jm.com.dpbennett.sm.converter.ConverterAdapter;
 
 /**
  *
- * @author Desmond Bennett
+ * @author desbenn
  */
-@FacesConverter("currencyConverter")
-public class CurrencyConverter extends ConverterAdapter {
+@FacesConverter("reportConverter")
+public class ReportConverter extends ConverterAdapter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
 
-        Currency currency = Currency.findByName(getEntityManager(), value);
+        Report report = Report.findReportByName(getEntityManager(), value);
 
-        if (currency == null) {
-            currency = new Currency(value);
+        if (report == null) {
+            report = new Report(value);
         }
 
-        return currency;
+        return report;
     }
 
 }
