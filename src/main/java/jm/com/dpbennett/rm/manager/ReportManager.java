@@ -1715,12 +1715,14 @@ public class ReportManager implements Serializable,
     }
 
     private void initDashboard() {
-
+        if (getUser().getModules().getReportModule()) {
+            getSystemManager().getDashboard().openTab("Report Management");
+        }
     }
 
     private void initMainTabView() {
 
-        if (getUser().getModules().getAdminModule()) {
+        if (getUser().getModules().getReportModule()) {
             getMainTabView().openTab("Report templates");
         }
 
