@@ -340,8 +340,7 @@ public class ReportManager implements Serializable,
         deleteDatePeriod();
     }
 
-    public void openReportsTab(String category) {
-        setReportCategory(category);
+    public void openReportsTab() {
         getMainTabView().openTab("Reports");
     }
 
@@ -420,7 +419,7 @@ public class ReportManager implements Serializable,
     }
 
     public void doReportSearch() {
-
+       
         if (getIsActiveReportsOnly()) {
             foundReports = Report.findActiveReports(getEntityManager1(), getReportSearchText());
         } else {
