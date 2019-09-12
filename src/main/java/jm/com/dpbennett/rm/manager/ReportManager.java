@@ -487,6 +487,8 @@ public class ReportManager implements Serializable,
     public void createNewReport() {
 
         currentReport = new Report();
+        
+        getMainTabView().openTab("Report templates");
 
         editReport();
     }
