@@ -343,6 +343,12 @@ public class ReportManager implements Serializable,
     public void openReportsTab() {
         getMainTabView().openTab("Reports");
     }
+    
+    public void openReportsTab(String reportCategory) {
+        setReportCategory(reportCategory);
+        
+        getMainTabView().openTab("Reports");
+    }
 
     public List<Report> completeReport(String query) {
         EntityManager em;
