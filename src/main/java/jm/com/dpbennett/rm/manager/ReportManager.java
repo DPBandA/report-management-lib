@@ -57,7 +57,6 @@ import jm.com.dpbennett.business.entity.utils.BusinessEntityUtils;
 import jm.com.dpbennett.business.entity.utils.DatePeriodJobReportColumnData;
 import jm.com.dpbennett.sm.manager.SystemManager;
 import jm.com.dpbennett.sm.manager.SystemManager.LoginActionListener;
-import jm.com.dpbennett.sm.manager.SystemManager.SearchActionListener;
 import jm.com.dpbennett.sm.util.BeanUtils;
 import jm.com.dpbennett.sm.util.DatePeriodJobReport;
 import jm.com.dpbennett.sm.util.DateUtils;
@@ -90,8 +89,7 @@ import org.primefaces.PrimeFaces;
  *
  * @author Desmond Bennett
  */
-public class ReportManager implements Serializable,
-        SearchActionListener, LoginActionListener {
+public class ReportManager implements Serializable, LoginActionListener {
 
     @PersistenceUnit(unitName = "JMTSPU")
     private EntityManagerFactory EMF1;
@@ -546,7 +544,6 @@ public class ReportManager implements Serializable,
         this.reportCategory = "Job";
 
         getSystemManager().addSingleLoginActionListener(this);
-        getSystemManager().addSingleSearchActionListener(this);
     }
 
     public void reset() {
@@ -1703,7 +1700,6 @@ public class ReportManager implements Serializable,
         return DateUtils.getDateSearchFields(getSelectedReport().getCategory());
     }
 
-    @Override
     public void doDefaultSearch() {
         switch (getSystemManager().getDashboard().getSelectedTabId()) {
             case "Report Management":
