@@ -342,6 +342,10 @@ public class ReportManager implements Serializable, LoginActionListener {
         getMainTabView().openTab("Reports");
     }
     
+    public void openReportTemplatesTab() {
+        getMainTabView().openTab("Report templates");
+    }
+    
     public void openReportsTab(String reportCategory) {
         setReportCategory(reportCategory);
         
@@ -1727,6 +1731,7 @@ public class ReportManager implements Serializable, LoginActionListener {
 
         if (getUser().getModules().getReportModule()) {
             getMainTabView().openTab("Report templates");
+            getMainTabView().openTab("Reports");
         }
 
     }
