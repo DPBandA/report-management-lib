@@ -800,12 +800,15 @@ public class ReportManager implements Serializable, LoginActionListener {
                     if (getSelectedReport().getName().equals("Analytical Services Report")) {
                         reportFile = getAnalyticalServicesReport(getLocalEntityManager());
                     }
+                    if (getSelectedReport().getName().equals("Monthly report")) {
+                        reportFile = getMonthlyReport(getLocalEntityManager());
+                    }
                     break;
                 case "application/xls":
                     if (getSelectedReport().getName().equals("Monthly report")) {
                         reportFile = getMonthlyReport(getLocalEntityManager());
                     }
-                    break;
+                    break;                    
                 default:
                     break;
             }
@@ -1374,6 +1377,9 @@ public class ReportManager implements Serializable, LoginActionListener {
         return null;
     }
 
+    
+    
+    
     public ByteArrayInputStream createExcelMonthlyReportFileInputStream(
             EntityManager em,
             File reportFile,
@@ -1583,6 +1589,218 @@ public class ReportManager implements Serializable, LoginActionListener {
 
         return null;
     }
+    
+    
+    /*
+    public ByteArrayInputStream createExcelMonthlyReportFileInputStream(
+            EntityManager em,
+            File reportFile,
+            Long departmentId) {
+
+        try {
+
+            // create workbook from input file
+            //POIFSFileSystem fileSystem = new POIFSFileSystem(new FileInputStream(reportFile));
+            FileInputStream inp = new FileInputStream(reportFile);
+            XSSFWorkbook wb = new XSSFWorkbook(inp);
+
+            // ensure that crucial sheets are updated automatically
+            int row = 2;
+
+            XSSFCellStyle stringCellStyle = wb.createCellStyle();
+            XSSFCellStyle longCellStyle = wb.createCellStyle();
+            XSSFCellStyle integerCellStyle = wb.createCellStyle();
+            XSSFCellStyle doubleCellStyle = wb.createCellStyle();
+            XSSFCellStyle dateCellStyle = wb.createCellStyle();
+
+            // Output stream for modified Excel file
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            // Get sheets
+           
+            //XSSFSheet valuations = wb.getSheet("Valuations");
+            //valuations.setForceFormulaRecalculation(true);
+
+            //XSSFSheet statsA = wb.getSheet("Stats (A)");
+            //statsA.setForceFormulaRecalculation(true);
+
+            //XSSFSheet statsB = wb.getSheet("Stats (B)");
+            //statsB.setForceFormulaRecalculation(true);
+
+            XSSFSheet rawData = wb.getSheet("Raw Data");
+
+            // Get report data
+            // Set date to now first
+            //getReportingDatePeriod1().setEndDate(new Date());
+            List<Object[]> reportData = Job.getJobReportRecords(
+                    em,
+                    BusinessEntityUtils.getDateString(getReportingDatePeriod1().getStartDate(), "'", "YMD", "-"),
+                    BusinessEntityUtils.getDateString(getReportingDatePeriod1().getEndDate(), "'", "YMD", "-"),
+                    //                    BusinessEntityUtils.getDateString(getReportingDatePeriod3().getStartDate(), "'", "YMD", "-"),
+                    //                    BusinessEntityUtils.getDateString(getReportingDatePeriod3().getEndDate(), "'", "YMD", "-"),
+                    departmentId);
+
+            // Fill in report data   
+            for (Object[] rowData : reportData) {
+                // Job numbers
+                ReportUtils.setExcelCellValue(wb, rawData, row, 0,
+                        (String) rowData[6],
+                        "java.lang.String", stringCellStyle);
+                // Client
+                ReportUtils.setExcelCellValue(wb, rawData, row, 1,
+                        (String) rowData[8],
+                        "java.lang.String", stringCellStyle);
+                // Business office
+                ReportUtils.setExcelCellValue(wb, rawData, row, 2,
+                        (String) rowData[11],
+                        "java.lang.String", stringCellStyle);
+                // Work progress
+                ReportUtils.setExcelCellValue(wb, rawData, row, 3,
+                        (String) rowData[12],
+                        "java.lang.String", stringCellStyle);
+                // Classification
+                ReportUtils.setExcelCellValue(wb, rawData, row, 7,
+                        (String) rowData[13],
+                        "java.lang.String", stringCellStyle);
+                // Category
+                ReportUtils.setExcelCellValue(wb, rawData, row, 8,
+                        (String) rowData[14],
+                        "java.lang.String", stringCellStyle);
+                // Section (Subcategory
+                ReportUtils.setExcelCellValue(wb, rawData, row, 9,
+                        (String) rowData[15],
+                        "java.lang.String", stringCellStyle);
+                // Section (Subcategory
+                ReportUtils.setExcelCellValue(wb, rawData, row, 10,
+                        (String) rowData[16],
+                        "java.lang.String", stringCellStyle);
+                // Assigned department
+                ReportUtils.setExcelCellValue(wb, rawData, row, 14,
+                        (String) rowData[9],
+                        "java.lang.String", stringCellStyle);
+                // Assigned department
+                ReportUtils.setExcelCellValue(wb, rawData, row, 15,
+                        (String) rowData[10],
+                        "java.lang.String", stringCellStyle);
+                // No. samples
+                ReportUtils.setExcelCellValue(wb, rawData, row, 16,
+                        (Long) rowData[5],
+                        "java.lang.Long", longCellStyle);
+                // No. test
+                ReportUtils.setExcelCellValue(wb, rawData, row, 18,
+                        (Integer) rowData[4],
+                        "java.lang.Integer", integerCellStyle);
+                // Total deposit
+                ReportUtils.setExcelCellValue(wb, rawData, row, 31,
+                        (Double) rowData[26],
+                        "java.lang.Double", doubleCellStyle);
+                // Amount due
+                if ((rowData[27] != null) && (rowData[26] != null)) {
+                    ReportUtils.setExcelCellValue(wb, rawData, row, 32,
+                            (Double) rowData[27] - (Double) rowData[26],
+                            "java.lang.Double", doubleCellStyle);
+                }
+                // Estimated cost
+                ReportUtils.setExcelCellValue(wb, rawData, row, 33,
+                        (Double) rowData[28],
+                        "java.lang.Double", doubleCellStyle);
+                // Final cost
+                ReportUtils.setExcelCellValue(wb, rawData, row, 34,
+                        (Double) rowData[27],
+                        "java.lang.Double", doubleCellStyle);
+                //  Job entry date
+                ReportUtils.setExcelCellValue(wb, rawData, row, 36,
+                        (Date) rowData[20],
+                        "java.util.Date", dateCellStyle);
+                //  Submission date 
+                ReportUtils.setExcelCellValue(wb, rawData, row, 37,
+                        (Date) rowData[29],
+                        "java.util.Date", dateCellStyle);
+                //  Expected date completion
+                ReportUtils.setExcelCellValue(wb, rawData, row, 38,
+                        (Date) rowData[17],
+                        "java.util.Date", dateCellStyle);
+                //  Completion date
+                ReportUtils.setExcelCellValue(wb, rawData, row, 39,
+                        (Date) rowData[19],
+                        "java.util.Date", dateCellStyle);
+                //  Assignee
+                ReportUtils.setExcelCellValue(wb, rawData, row, 41,
+                        (String) rowData[21] + " " + (String) rowData[22],
+                        "java.lang.String", stringCellStyle);
+                //  Entered by firstname
+                ReportUtils.setExcelCellValue(wb, rawData, row, 42,
+                        (String) rowData[24],
+                        "java.lang.String", stringCellStyle);
+                //  Entered by lastname
+                ReportUtils.setExcelCellValue(wb, rawData, row, 43,
+                        (String) rowData[25],
+                        "java.lang.String", stringCellStyle);
+                //  List of samples
+                ReportUtils.setExcelCellValue(wb, rawData, row, 44,
+                        (String) rowData[0],
+                        "java.lang.String", stringCellStyle);
+                //  List of sample brands
+                ReportUtils.setExcelCellValue(wb, rawData, row, 45,
+                        (String) rowData[1],
+                        "java.lang.String", stringCellStyle);
+                //  List of sample brands
+                ReportUtils.setExcelCellValue(wb, rawData, row, 46,
+                        (String) rowData[2],
+                        "java.lang.String", stringCellStyle);
+                //  List of sample brands
+                ReportUtils.setExcelCellValue(wb, rawData, row, 47,
+                        (String) rowData[30],
+                        "java.lang.String", stringCellStyle);
+                row++;
+
+            }
+
+            // Insert data at top of sheet
+            //  Department name
+            Department department = Department.findDepartmentById(em, departmentId);
+            ReportUtils.setExcelCellValue(wb, rawData, 0, 1,
+                    department.getName(),
+                    "java.lang.String", stringCellStyle);
+            //  Data starts at:
+            ReportUtils.setExcelCellValue(wb, rawData, 0, 4,
+                    getMonthlyReportDataDatePeriod().getStartDate(),
+                    "java.util.Date", dateCellStyle);
+            //  Data ends at:
+            ReportUtils.setExcelCellValue(wb, rawData, 0, 6,
+                    getMonthlyReportDataDatePeriod().getEndDate(),
+                    "java.util.Date", dateCellStyle);
+            //  Month starts at:
+            ReportUtils.setExcelCellValue(wb, rawData, 0, 8,
+                    getReportingDatePeriod2().getStartDate(),
+                    "java.util.Date", dateCellStyle);
+            //  Month ends at:
+            ReportUtils.setExcelCellValue(wb, rawData, 0, 10,
+                    getReportingDatePeriod2().getEndDate(),
+                    "java.util.Date", dateCellStyle);
+            // Year type
+            ReportUtils.setExcelCellValue(wb, rawData, 0, 12,
+                    getReportingDatePeriod3().getName(),
+                    "java.lang.String", stringCellStyle);
+            //  Year starts at:
+            ReportUtils.setExcelCellValue(wb, rawData, 0, 15,
+                    getReportingDatePeriod3().getStartDate(),
+                    "java.util.Date", dateCellStyle);
+            //  Year ends at:
+            ReportUtils.setExcelCellValue(wb, rawData, 0, 17,
+                    getReportingDatePeriod3().getEndDate(),
+                    "java.util.Date", dateCellStyle);
+
+            wb.write(out);
+
+            return new ByteArrayInputStream(out.toByteArray());
+
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+
+        return null;
+    }
+    */
 
     /**
      *
