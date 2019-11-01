@@ -1947,10 +1947,11 @@ public class ReportManager implements Serializable, LoginActionListener {
 
     private void initMainTabView() {
 
-        if (getUser().getModules().getReportModule()) {
-            getMainTabView().openTab("Report Templates");
+        // tk remove comment for deployment and enable menu items
+        //if (getUser().getModules().getReportModule()) {
+            //getMainTabView().openTab("Report Templates");
             getMainTabView().openTab("Reports");
-        }
+        //}
 
     }
 }
