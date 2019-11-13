@@ -45,7 +45,6 @@ import jm.com.dpbennett.business.entity.Client;
 import jm.com.dpbennett.business.entity.DatePeriod;
 import jm.com.dpbennett.business.entity.Department;
 import jm.com.dpbennett.business.entity.Employee;
-import jm.com.dpbennett.business.entity.Job;
 import jm.com.dpbennett.business.entity.JobManagerUser;
 import jm.com.dpbennett.business.entity.JobReportItem;
 import jm.com.dpbennett.business.entity.JobSample;
@@ -53,6 +52,7 @@ import jm.com.dpbennett.business.entity.JobSubCategory;
 import jm.com.dpbennett.business.entity.Report;
 import jm.com.dpbennett.business.entity.Sector;
 import jm.com.dpbennett.business.entity.SystemOption;
+import jm.com.dpbennett.business.entity.jmt.Job;
 import jm.com.dpbennett.business.entity.utils.BusinessEntityUtils;
 import jm.com.dpbennett.business.entity.utils.DatePeriodJobReportColumnData;
 import jm.com.dpbennett.sm.manager.SystemManager;
@@ -1937,18 +1937,18 @@ public class ReportManager implements Serializable, LoginActionListener {
     }
 
     private void initDashboard() {
-        //if (getUser().getModules().getReportModule()) {
+        if (getUser().getModules().getReportModule()) {
             getSystemManager().getDashboard().openTab("Report Management");
-        //}
+        }
     }
 
     private void initMainTabView() {
 
         // tk remove comment for deployment and enable menu items
-        //if (getUser().getModules().getReportModule()) {
-            //getMainTabView().openTab("Report Templates");
+        if (getUser().getModules().getReportModule()) {
+            getMainTabView().openTab("Report Templates");
             getMainTabView().openTab("Reports");
-        //}
+        }
 
     }
 }
