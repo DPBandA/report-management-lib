@@ -42,10 +42,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import jm.com.dpbennett.business.entity.cm.Client;
-import jm.com.dpbennett.business.entity.DatePeriod;
+import jm.com.dpbennett.business.entity.rm.DatePeriod;
 import jm.com.dpbennett.business.entity.hrm.Department;
 import jm.com.dpbennett.business.entity.hrm.Employee;
-import jm.com.dpbennett.business.entity.jmts.JobManagerUser;
+import jm.com.dpbennett.business.entity.hrm.User;
 import jm.com.dpbennett.business.entity.rm.JobReportItem;
 import jm.com.dpbennett.business.entity.jmts.JobSample;
 import jm.com.dpbennett.business.entity.fm.JobSubCategory;
@@ -558,7 +558,7 @@ public class ReportManager implements Serializable, LoginActionListener {
         getMainTabView().closeTab("Reports");
     }
 
-    public JobManagerUser getUser() {
+    public User getUser() {
         return getSystemManager().getUser();
     }
 
@@ -1067,7 +1067,7 @@ public class ReportManager implements Serializable, LoginActionListener {
 
     public FileInputStream createExcelJobReportFileInputStream(
             URL FileUrl,
-            JobManagerUser user,
+            User user,
             Department reportingDepartment,
             DatePeriodJobReport jobSubCategoryReport,
             DatePeriodJobReport sectorReport,
