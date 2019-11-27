@@ -542,16 +542,16 @@ public class ReportManager implements Serializable, AuthenticationListener {
     }
 
     private void init() {
-        this.reportSearchText = "";
-        this.longProcessProgress = 0;
-        this.columnsToExclude = "";
-        this.reportCategory = "Job";
+        reset();
 
         getSystemManager().addSingleAuthenticationListener(this);
     }
 
     public void reset() {
-        init();
+        this.reportSearchText = "";
+        this.longProcessProgress = 0;
+        this.columnsToExclude = "";
+        this.reportCategory = "Job";
     }
 
     public void closeReportsTab() {
@@ -1953,6 +1953,6 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
     @Override
     public void completeLogout() {
-        System.out.println("Complete logout...");
+        reset();
     }
 }
