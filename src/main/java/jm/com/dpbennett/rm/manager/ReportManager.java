@@ -55,8 +55,8 @@ import jm.com.dpbennett.business.entity.sm.SystemOption;
 import jm.com.dpbennett.business.entity.jmts.Job;
 import jm.com.dpbennett.business.entity.util.BusinessEntityUtils;
 import jm.com.dpbennett.business.entity.util.DatePeriodJobReportColumnData;
+import jm.com.dpbennett.sm.Authentication.AuthenticationListener;
 import jm.com.dpbennett.sm.manager.SystemManager;
-import jm.com.dpbennett.sm.manager.SystemManager.LoginActionListener;
 import jm.com.dpbennett.sm.util.BeanUtils;
 import jm.com.dpbennett.sm.util.DatePeriodJobReport;
 import jm.com.dpbennett.sm.util.DateUtils;
@@ -89,7 +89,7 @@ import org.primefaces.PrimeFaces;
  *
  * @author Desmond Bennett
  */
-public class ReportManager implements Serializable, LoginActionListener {
+public class ReportManager implements Serializable, AuthenticationListener {
 
     @PersistenceUnit(unitName = "JMTSPU")
     private EntityManagerFactory EMF1;
@@ -547,7 +547,7 @@ public class ReportManager implements Serializable, LoginActionListener {
         this.columnsToExclude = "";
         this.reportCategory = "Job";
 
-        getSystemManager().addSingleLoginActionListener(this);
+        getSystemManager().addSingleAuthenticationListener(this);
     }
 
     public void reset() {
@@ -1929,13 +1929,6 @@ public class ReportManager implements Serializable, LoginActionListener {
         }
     }
 
-    @Override
-    public void doLogin() {
-
-        initDashboard();
-        initMainTabView();
-    }
-
     private void initDashboard() {
         if (getUser().getModules().getReportModule()) {
             getSystemManager().getDashboard().openTab("Report Management");
@@ -1950,5 +1943,16 @@ public class ReportManager implements Serializable, LoginActionListener {
             getMainTabView().openTab("Reports");
         }
 
+    }
+
+    @Override
+    public void completeLogin() {
+        initDashboard();
+        initMainTabView();
+    }
+
+    @Override
+    public void completeLogout() {
+        System.out.println("Complete logout...");
     }
 }
