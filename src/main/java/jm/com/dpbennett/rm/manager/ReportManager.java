@@ -367,7 +367,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
         }
     }
 
-    public List<Report> completeReportByCategory(String query) {
+    public List<Report> completeReportByCategoryAndName(String query) {
         EntityManager em;
 
         try {
