@@ -1377,6 +1377,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
         return null;
     }
     
+    /*
     public ByteArrayInputStream createExcelMonthlyReportFileInputStream(
             EntityManager em,
             File reportFile,
@@ -1586,9 +1587,9 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
         return null;
     }
+    */
     
     
-    /*
     public ByteArrayInputStream createExcelMonthlyReportFileInputStream(
             EntityManager em,
             File reportFile,
@@ -1797,7 +1798,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
         return null;
     }
-    */
+    
 
     /**
      *
