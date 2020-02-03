@@ -1597,24 +1597,23 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
         try {
 
-            // create workbook from input file
-            //POIFSFileSystem fileSystem = new POIFSFileSystem(new FileInputStream(reportFile));
+            int row = 2;
             FileInputStream inp = new FileInputStream(reportFile);
             XSSFWorkbook wb = new XSSFWorkbook(inp);
-
-            // ensure that crucial sheets are updated automatically
-            int row = 2;
-
+            CreationHelper createHelper = wb.getCreationHelper();  
             XSSFCellStyle stringCellStyle = wb.createCellStyle();
+            stringCellStyle.setWrapText(true);
             XSSFCellStyle longCellStyle = wb.createCellStyle();
             XSSFCellStyle integerCellStyle = wb.createCellStyle();
             XSSFCellStyle doubleCellStyle = wb.createCellStyle();
             XSSFCellStyle dateCellStyle = wb.createCellStyle();
+            dateCellStyle.setDataFormat(
+                    createHelper.createDataFormat().getFormat("m/d/yyyy"));
 
             // Output stream for modified Excel file
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            // Get sheets
-           
+            // Get sheets ensure that crucial sheets are updated automatically
+            
             //XSSFSheet valuations = wb.getSheet("Valuations");
             //valuations.setForceFormulaRecalculation(true);
 
@@ -1628,18 +1627,15 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
             // Get report data
             // Set date to now first
-            //getReportingDatePeriod1().setEndDate(new Date());
             List<Object[]> reportData = Job.getJobReportRecords(
                     em,
                     BusinessEntityUtils.getDateString(getReportingDatePeriod1().getStartDate(), "'", "YMD", "-"),
                     BusinessEntityUtils.getDateString(getReportingDatePeriod1().getEndDate(), "'", "YMD", "-"),
-                    //                    BusinessEntityUtils.getDateString(getReportingDatePeriod3().getStartDate(), "'", "YMD", "-"),
-                    //                    BusinessEntityUtils.getDateString(getReportingDatePeriod3().getEndDate(), "'", "YMD", "-"),
                     departmentId);
 
             // Fill in report data   
             for (Object[] rowData : reportData) {
-                // Job numbers
+                // Job number
                 ReportUtils.setExcelCellValue(wb, rawData, row, 0,
                         (String) rowData[6],
                         "java.lang.String", stringCellStyle);
@@ -1654,6 +1650,14 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 // Work progress
                 ReportUtils.setExcelCellValue(wb, rawData, row, 3,
                         (String) rowData[12],
+                        "java.lang.String", stringCellStyle);
+                // Service(s)
+                ReportUtils.setExcelCellValue(wb, rawData, row, 4,
+                        (String) rowData[31],
+                        "java.lang.String", stringCellStyle);
+                // Instructions
+                ReportUtils.setExcelCellValue(wb, rawData, row, 5,
+                        (String) rowData[30],
                         "java.lang.String", stringCellStyle);
                 // Classification
                 ReportUtils.setExcelCellValue(wb, rawData, row, 7,
