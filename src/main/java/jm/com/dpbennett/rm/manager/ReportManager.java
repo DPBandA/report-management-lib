@@ -1569,6 +1569,10 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 ReportUtils.setExcelCellValue(wb, rawData, row, 39,
                         (Date) rowData[19],
                         "java.util.Date", dateCellStyle);
+                //  TAT given to client
+                ReportUtils.setExcelCellValue(wb, rawData, row, 40,
+                        (Integer) rowData[46],
+                        "java.lang.Integer", integerCellStyle);
                 //  Assignee
                 ReportUtils.setExcelCellValue(wb, rawData, row, 41,
                         (String) rowData[21] + " " + (String) rowData[22],
@@ -1585,17 +1589,17 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 ReportUtils.setExcelCellValue(wb, rawData, row, 44,
                         (String) rowData[0],
                         "java.lang.String", stringCellStyle);
-                //  List of sample brands
+                //  List of brands
                 ReportUtils.setExcelCellValue(wb, rawData, row, 45,
                         (String) rowData[1],
                         "java.lang.String", stringCellStyle);
-                //  List of sample brands
+                //  List of models
                 ReportUtils.setExcelCellValue(wb, rawData, row, 46,
                         (String) rowData[2],
                         "java.lang.String", stringCellStyle);
-                //  List of sample brands
+                //  Comment and results
                 ReportUtils.setExcelCellValue(wb, rawData, row, 47,
-                        (String) rowData[30],
+                        (String) rowData[7],
                         "java.lang.String", stringCellStyle);
                 row++;
 
