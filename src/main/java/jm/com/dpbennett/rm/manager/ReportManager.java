@@ -342,14 +342,14 @@ public class ReportManager implements Serializable, AuthenticationListener {
     public void openReportsTab() {
         getMainTabView().openTab("Reports");
     }
-    
+
     public void openReportTemplatesTab() {
         getMainTabView().openTab("Report Templates");
     }
-    
+
     public void openReportsTab(String reportCategory) {
         setReportCategory(reportCategory);
-        
+
         getMainTabView().openTab("Reports");
     }
 
@@ -428,7 +428,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
     }
 
     public void doReportSearch() {
-       
+
         if (getIsActiveReportsOnly()) {
             foundReports = Report.findActiveReports(getEntityManager1(), getReportSearchText());
         } else {
@@ -495,7 +495,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
     public void createNewReport() {
 
         currentReport = new Report();
-        
+
         getMainTabView().openTab("Report Templates");
 
         editReport();
@@ -593,7 +593,9 @@ public class ReportManager implements Serializable, AuthenticationListener {
     }
 
     public void setReportingDepartment1(Department reportingDepartment1) {
-        selectedReport.getDepartments().set(0, reportingDepartment1);
+        if (!selectedReport.getDepartments().isEmpty()) {
+            selectedReport.getDepartments().set(0, reportingDepartment1);
+        }
     }
 
     public JasperPrint getJasperPrint(Connection con,
@@ -801,15 +803,15 @@ public class ReportManager implements Serializable, AuthenticationListener {
                     if (getSelectedReport().getName().equals("Analytical Services Report")) {
                         reportFile = getAnalyticalServicesReport(getLocalEntityManager());
                     }
-                    if (getSelectedReport().getName().equals("Monthly report")) {
+                    if (getSelectedReport().getName().contains("Monthly Report")) {
                         reportFile = getMonthlyReport(getLocalEntityManager());
                     }
                     break;
                 case "application/xls":
-                    if (getSelectedReport().getName().equals("Monthly report")) {
+                    if (getSelectedReport().getName().contains("Monthly Report")) {
                         reportFile = getMonthlyReport(getLocalEntityManager());
                     }
-                    break;                    
+                    break;
                 default:
                     break;
             }
@@ -854,12 +856,9 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
             // Get byte stream for report file
             if (getSelectedReport().getUsePackagedReportFileTemplate()) {
-//                stream = analyticalServicesReportFileInputStream(em, new File(getClass().getClassLoader().
-//                        getResource("/reports/" + getSelectedReport().getReportFileTemplate()).getFile()),
-//                        getReportingDepartment1().getId());
                 stream = createExcelMonthlyReportFileInputStream(
                         em, new File(getClass().getClassLoader().
-                                getResource("/reports/" + getSelectedReport().getReportFileTemplate()).getFile()),
+                                getResource("/reports" + getSelectedReport().getReportFileTemplate()).getFile()),
                         getReportingDepartment1().getId());
             } else {
                 stream = createExcelMonthlyReportFileInputStream(
@@ -1377,18 +1376,18 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
         return null;
     }
-    
+
     public ByteArrayInputStream createExcelMonthlyReportFileInputStream(
             EntityManager em,
             File reportFile,
             Long departmentId) {
 
         try {
-
+            String status;
             int row = 2;
             FileInputStream inp = new FileInputStream(reportFile);
             XSSFWorkbook wb = new XSSFWorkbook(inp);
-            CreationHelper createHelper = wb.getCreationHelper();  
+            CreationHelper createHelper = wb.getCreationHelper();
             XSSFCellStyle stringCellStyle = wb.createCellStyle();
             stringCellStyle.setWrapText(true);
             XSSFCellStyle longCellStyle = wb.createCellStyle();
@@ -1402,14 +1401,14 @@ public class ReportManager implements Serializable, AuthenticationListener {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             // Get sheets ensure that crucial sheets are updated automatically
             XSSFSheet executiveSummary = wb.getSheet("Executive Summary");
-            executiveSummary.setForceFormulaRecalculation(true);    
-            
+            executiveSummary.setForceFormulaRecalculation(true);
+
             XSSFSheet performanceVSStrategicGoals = wb.getSheet("Performance VS Strategic Goals");
             performanceVSStrategicGoals.setForceFormulaRecalculation(true);
-            
+
             XSSFSheet manuallyUpdatedStats = wb.getSheet("Manually Updated Stats");
             manuallyUpdatedStats.setForceFormulaRecalculation(true);
-            
+
             XSSFSheet valuations = wb.getSheet("Valuations");
             valuations.setForceFormulaRecalculation(true);
 
@@ -1601,6 +1600,46 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 ReportUtils.setExcelCellValue(wb, rawData, row, 47,
                         (String) rowData[7],
                         "java.lang.String", stringCellStyle);
+                // EDOC Ontime Status
+                if (rowData[17] == null) {
+                    status = "N/A";
+                } else if (rowData[19] == null) {
+                    status = "Not Yet Completed";
+                } else if (((Date) rowData[17]).before((Date) rowData[19])) {
+                    status = "Completed Late";
+                } else if (((Date) rowData[17]).after((Date) rowData[19])
+                        || ((Date) rowData[17]).equals((Date) rowData[19])) {
+                    status = "Completed Early";
+                } else {
+                    status = "Not Yet Completed";
+                }
+                ReportUtils.setExcelCellValue(wb, rawData, row, 48,
+                        status,
+                        "java.lang.String", stringCellStyle);
+                //  Expected start date
+                ReportUtils.setExcelCellValue(wb, rawData, row, 49,
+                        (Date) rowData[47],
+                        "java.util.Date", dateCellStyle);
+                //  Start date
+                ReportUtils.setExcelCellValue(wb, rawData, row, 50,
+                        (Date) rowData[48],
+                        "java.util.Date", dateCellStyle);
+                // ESD Ontime Status
+                if (rowData[47] == null) {
+                    status = "N/A";
+                } else if (rowData[48] == null) {
+                    status = "Not Yet Start";
+                } else if (((Date) rowData[47]).before((Date) rowData[48])) {
+                    status = "Started Late";
+                } else if (((Date) rowData[47]).after((Date) rowData[48])
+                        || ((Date) rowData[47]).equals((Date) rowData[48])) {
+                    status = "Started Early";
+                } else {
+                    status = "Not Yet Started";
+                }
+                ReportUtils.setExcelCellValue(wb, rawData, row, 51,
+                        status,
+                        "java.lang.String", stringCellStyle);
                 row++;
 
             }
@@ -1650,7 +1689,6 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
         return null;
     }
-    
 
     /**
      *
