@@ -803,12 +803,12 @@ public class ReportManager implements Serializable, AuthenticationListener {
                     if (getSelectedReport().getName().equals("Analytical Services Report")) {
                         reportFile = getAnalyticalServicesReport(getLocalEntityManager());
                     }
-                    if (getSelectedReport().getName().contains("Monthly Report")) {
+                    if (getSelectedReport().getName().toUpperCase().contains("MONTHLY REPORT")) {
                         reportFile = getMonthlyReport(getLocalEntityManager());
                     }
                     break;
                 case "application/xls":
-                    if (getSelectedReport().getName().contains("Monthly Report")) {
+                    if (getSelectedReport().getName().toUpperCase().contains("MONTHLY REPORT")) {
                         reportFile = getMonthlyReport(getLocalEntityManager());
                     }
                     break;
