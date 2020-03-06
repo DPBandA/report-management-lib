@@ -1394,8 +1394,11 @@ public class ReportManager implements Serializable, AuthenticationListener {
             XSSFCellStyle integerCellStyle = wb.createCellStyle();
             XSSFCellStyle doubleCellStyle = wb.createCellStyle();
             XSSFCellStyle dateCellStyle = wb.createCellStyle();
+            XSSFCellStyle datePeriodsCellStyle = wb.createCellStyle();
             dateCellStyle.setDataFormat(
-                    createHelper.createDataFormat().getFormat("m/d/yyyy"));
+                    createHelper.createDataFormat().getFormat("MMM dd, yyyy"));
+            datePeriodsCellStyle.setDataFormat(
+                    createHelper.createDataFormat().getFormat("yyyy-mm-dd"));
 
             // Output stream for modified Excel file
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -1653,31 +1656,31 @@ public class ReportManager implements Serializable, AuthenticationListener {
             //  Data starts at:
             ReportUtils.setExcelCellValue(wb, rawData, 0, 4,
                     getMonthlyReportDataDatePeriod().getStartDate(),
-                    "java.util.Date", dateCellStyle);
+                    "java.util.Date", datePeriodsCellStyle);
             //  Data ends at:
             ReportUtils.setExcelCellValue(wb, rawData, 0, 6,
                     getMonthlyReportDataDatePeriod().getEndDate(),
-                    "java.util.Date", dateCellStyle);
+                    "java.util.Date", datePeriodsCellStyle);
             //  Month starts at:
             ReportUtils.setExcelCellValue(wb, rawData, 0, 8,
                     getReportingDatePeriod2().getStartDate(),
-                    "java.util.Date", dateCellStyle);
+                    "java.util.Date", datePeriodsCellStyle);
             //  Month ends at:
             ReportUtils.setExcelCellValue(wb, rawData, 0, 10,
                     getReportingDatePeriod2().getEndDate(),
-                    "java.util.Date", dateCellStyle);
+                    "java.util.Date", datePeriodsCellStyle);
             // Year type
             ReportUtils.setExcelCellValue(wb, rawData, 0, 12,
                     getReportingDatePeriod3().getName(),
-                    "java.lang.String", stringCellStyle);
+                    "java.lang.String", datePeriodsCellStyle);
             //  Year starts at:
             ReportUtils.setExcelCellValue(wb, rawData, 0, 15,
                     getReportingDatePeriod3().getStartDate(),
-                    "java.util.Date", dateCellStyle);
+                    "java.util.Date", datePeriodsCellStyle);
             //  Year ends at:
             ReportUtils.setExcelCellValue(wb, rawData, 0, 17,
                     getReportingDatePeriod3().getEndDate(),
-                    "java.util.Date", dateCellStyle);
+                    "java.util.Date", datePeriodsCellStyle);
 
             wb.write(out);
 
