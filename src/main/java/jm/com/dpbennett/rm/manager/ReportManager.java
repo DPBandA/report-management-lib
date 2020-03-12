@@ -695,8 +695,11 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 // Provide date parameters if required
                 if (selectedReport.getDatePeriodRequired()) {
                     for (int i = 0; i < selectedReport.getDatePeriods().size(); i++) {
+                        System.out.println("date period: " + selectedReport.getDatePeriods().get(i).getDateField());
                         parameters.put("dateField" + (i + 1),
                                 selectedReport.getDatePeriods().get(i).getDateField());
+//                        parameters.put("dateField" + (i + 1),
+//                                "dateReceived"); // tk
                         parameters.put("startOfPeriod" + (i + 1),
                                 selectedReport.getDatePeriods().get(i).initDatePeriod().getStartDate());
                         parameters.put("endOfPeriod" + (i + 1),
