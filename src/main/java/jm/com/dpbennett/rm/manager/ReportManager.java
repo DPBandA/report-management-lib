@@ -112,6 +112,10 @@ public class ReportManager implements Serializable, AuthenticationListener {
         init();
     }
 
+    /**
+     * Gets the header or title for this application.
+     * @return 
+     */
     public String getApplicationHeader() {
 
         return "Report Management";
@@ -163,7 +167,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
     }
 
     /**
-     *
+     * 
      * @return
      */
     public List<SelectItem> getDatePeriods() {
