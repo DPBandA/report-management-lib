@@ -397,7 +397,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
     }
 
     public List getReportCategories() {
-        return ReportUtils.getCategories();
+        return ReportUtils.getCategories(getEntityManager1());
     }
 
     public List getReportMimeTypes() {
