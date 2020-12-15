@@ -250,7 +250,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
         }
 
-        // Ensure that no date period if null
+        // Ensure that no date period is null
         if (selectedReport.getDatePeriods().get(1).getStartDate() == null) {
             selectedReport.getDatePeriods().get(1).setStartDate(new Date());
         }
@@ -693,7 +693,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 StreamedContent streamContent;
                 byte[] fileBytes;
 
-                // Provide reoprt parameters4
+                // Provide report parameters
                 parameters.put("reportTitle", selectedReport.getName());
 
                 // Provide date parameters if required
@@ -702,8 +702,6 @@ public class ReportManager implements Serializable, AuthenticationListener {
                         System.out.println("date period: " + selectedReport.getDatePeriods().get(i).getDateField());
                         parameters.put("dateField" + (i + 1),
                                 selectedReport.getDatePeriods().get(i).getDateField());
-//                        parameters.put("dateField" + (i + 1),
-//                                "dateReceived"); // tk
                         parameters.put("startOfPeriod" + (i + 1),
                                 selectedReport.getDatePeriods().get(i).initDatePeriod().getStartDate());
                         parameters.put("endOfPeriod" + (i + 1),
@@ -838,7 +836,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
             longProcessProgress = 0;
         } else {
             if (longProcessProgress < 10) {
-                // this is to ensure that this method does not make the progress
+                // This is to ensure that this method does not make the progress
                 // complete as this is done elsewhere.
                 longProcessProgress = longProcessProgress + 1;
             }
@@ -905,7 +903,6 @@ public class ReportManager implements Serializable, AuthenticationListener {
         return null;
     }
 
-    // tk check if can be del.
     public void updateServiceContract() {
     }
 
@@ -966,13 +963,13 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 + " AND UPPER(jobStatusAndTracking.workProgress) <> 'WITHDRAWN BY CLIENT'"
                 + " GROUP BY job.jobSubCategory"
                 + " ORDER BY job.jobSubCategory.subCategory ASC";
-        // now do search
+        
         try {
             data = em.createQuery(searchQuery, DatePeriodJobReportColumnData.class).getResultList();
             if (data == null) {
                 data = new ArrayList<>();
             }
-            // sort by earnings and non-earnings
+            
         } catch (Exception e) {
             System.out.println(e);
             return null;
@@ -984,7 +981,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
     public List<DatePeriodJobReportColumnData> sectorReportByDatePeriod(
             EntityManager em,
             String dateSearchField,
-            String searchText, // filled in with department's name
+            String searchText,
             Date startDate,
             Date endDate) {
 
@@ -1010,8 +1007,6 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 + " AND UPPER(jobStatusAndTracking.workProgress) <> 'WITHDRAWN BY CLIENT'"
                 + " GROUP BY job.sector"
                 + " ORDER BY job.sector.name ASC";
-        // now do search
-
         try {
             data = em.createQuery(searchQuery, DatePeriodJobReportColumnData.class).getResultList();
             if (data
@@ -1028,7 +1023,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
 
     public List<DatePeriodJobReportColumnData> jobReportByDatePeriod(
             EntityManager em,
-            String searchText, // filled in with department's name
+            String searchText, 
             Date startDate,
             Date endDate) {
 
@@ -1056,8 +1051,6 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 + " AND UPPER(jobStatusAndTracking.workProgress) <> 'CANCELLED'"
                 + " AND UPPER(jobStatusAndTracking.workProgress) <> 'WITHDRAWN BY CLIENT'"
                 + " ORDER BY job.sector.name ASC";
-        // now do search
-
         try {
             data = em.createQuery(searchQuery, DatePeriodJobReportColumnData.class).getResultList();
             if (data
@@ -1085,7 +1078,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
             FileInputStream inp = new FileInputStream(file);
             int row = 0;
 
-            // create workbook from input file
+            // Create workbook from input file
             POIFSFileSystem fileSystem = new POIFSFileSystem((FileInputStream) inp);
             HSSFWorkbook wb = new HSSFWorkbook(fileSystem);
             HSSFCellStyle dataCellStyle = wb.createCellStyle();
@@ -1094,7 +1087,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
             HSSFCellStyle columnHeaderCellStyle = wb.createCellStyle();
             columnHeaderCellStyle.setFont(ReportUtils.createBoldFont(wb, (short) 12, HSSFColor.BLUE.index));
 
-            // create temp file for output
+            // Create temp file for output
             FileOutputStream out = new FileOutputStream("MonthlyReport" + user.getId() + ".xls");
 
             HSSFSheet jobSheet = wb.getSheet("Statistics");
@@ -1119,7 +1112,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
                     "java.lang.String", headerCellStyle);
 
             row++;
-            // subcategory report
+            
             if (jobSubCategoryReport != null) {
                 ReportUtils.setExcelCellValue(wb, jobSheet, row++, 0,
                         "EARNINGS",
