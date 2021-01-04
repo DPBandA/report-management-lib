@@ -1790,22 +1790,22 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 departmentId);
         // Fill in report data   
         for (Object[] rowData : reportData) {
-            // Comments
+            // Job number
             ReportUtils.setExcelCellValue(wb, surveysSheet, row, 0,
                     (String) rowData[0],
                     "java.lang.String", stringCellStyle);
-            // Job number
-//            ReportUtils.setExcelCellValue(wb, surveysSheet, row, 1,
-//                    (String) rowData[1],
-//                    "java.lang.String", stringCellStyle);
-//            // Consignee
-//            ReportUtils.setExcelCellValue(wb, surveysSheet, row, 2,
-//                    (String) rowData[2],
-//                    "java.lang.String", stringCellStyle);
-//            // Business office
-//            ReportUtils.setExcelCellValue(wb, surveysSheet, row, 3,
-//                    (String) rowData[3],
-//                    "java.lang.String", stringCellStyle);
+            // Consignee
+            ReportUtils.setExcelCellValue(wb, surveysSheet, row, 1,
+                    (String) rowData[1],
+                    "java.lang.String", stringCellStyle);
+            // Comments
+            ReportUtils.setExcelCellValue(wb, surveysSheet, row, 2,
+                    (String) rowData[2],
+                    "java.lang.String", stringCellStyle);            
+            // Business office
+            ReportUtils.setExcelCellValue(wb, surveysSheet, row, 3,
+                    (String) rowData[3],
+                    "java.lang.String", stringCellStyle);
 //            // Inspector first name
 //            ReportUtils.setExcelCellValue(wb, surveysSheet, row, 4,
 //                    (String) rowData[4],
