@@ -56,6 +56,7 @@ import jm.com.dpbennett.business.entity.sm.SystemOption;
 import jm.com.dpbennett.business.entity.jmts.Job;
 import jm.com.dpbennett.business.entity.sc.Complaint;
 import jm.com.dpbennett.business.entity.sc.ComplianceSurvey;
+import jm.com.dpbennett.business.entity.sc.FactoryInspection;
 import jm.com.dpbennett.business.entity.util.BusinessEntityUtils;
 import jm.com.dpbennett.business.entity.util.DatePeriodJobReportColumnData;
 import jm.com.dpbennett.sm.Authentication.AuthenticationListener;
@@ -1737,20 +1738,30 @@ public class ReportManager implements Serializable, AuthenticationListener {
             // Output stream for modified Excel file
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             // Get sheets ensure that crucial sheets are updated automatically
-            XSSFSheet executiveSummary = wb.getSheet("Combined Report");
-            executiveSummary.setForceFormulaRecalculation(true);
+            XSSFSheet combined = wb.getSheet("Combined");
+            combined.setForceFormulaRecalculation(true);
 
-            XSSFSheet performanceVSStrategicGoals = wb.getSheet("Kingston Report");
-            performanceVSStrategicGoals.setForceFormulaRecalculation(true);
+            XSSFSheet kingston = wb.getSheet("Kingston");
+            kingston.setForceFormulaRecalculation(true);
+            
+            XSSFSheet mandeville = wb.getSheet("Mandeville");
+            mandeville.setForceFormulaRecalculation(true);
+            
+            XSSFSheet ochoRios = wb.getSheet("Ocho Rios");
+            ochoRios.setForceFormulaRecalculation(true);
+            
+            XSSFSheet savannaLaMar = wb.getSheet("Savanna-La-Mar");
+            savannaLaMar.setForceFormulaRecalculation(true);
 
-            XSSFSheet manuallyUpdatedStats = wb.getSheet("Montego Bay Report");
-            manuallyUpdatedStats.setForceFormulaRecalculation(true);
+            XSSFSheet montegoBay = wb.getSheet("Montego Bay");
+            montegoBay.setForceFormulaRecalculation(true);
 
             XSSFSheet valuations = wb.getSheet("Analyses");
             valuations.setForceFormulaRecalculation(true);
 
             getComplianceSurveyData(em, departmentId, wb);
             getComplaintData(em, departmentId, wb);
+            getFactoryInspectionData(em, departmentId, wb);
 
             wb.write(out);
 
@@ -1769,7 +1780,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
             XSSFWorkbook wb) {
 
         int row = 2;
-        XSSFSheet complaintsSheet = wb.getSheet("Surveys");
+        XSSFSheet factoryInspectionsSheet = wb.getSheet("Surveys");
         CreationHelper createHelper = wb.getCreationHelper();
         XSSFCellStyle stringCellStyle = wb.createCellStyle();
         stringCellStyle.setWrapText(true);
@@ -1790,115 +1801,115 @@ public class ReportManager implements Serializable, AuthenticationListener {
         // Fill in report data   
         for (Object[] rowData : reportData) {
             // Job number
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 0,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 0,
                     (String) rowData[0],
                     "java.lang.String", stringCellStyle);
             // Consignee
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 1,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 1,
                     (String) rowData[1],
                     "java.lang.String", stringCellStyle);
             // Comments
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 2,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 2,
                     (String) rowData[2],
                     "java.lang.String", stringCellStyle);            
             // Business office
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 3,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 3,
                     (String) rowData[3],
                     "java.lang.String", stringCellStyle);
             // Entry doc #
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 4,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 4,
                     (String) rowData[4],
                     "java.lang.String", stringCellStyle);
             // Containers
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 5,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 5,
                     (String) rowData[5],
                     "java.lang.String", stringCellStyle); 
             // Survey type
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 6,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 6,
                     (String) rowData[6],
                     "java.lang.String", stringCellStyle);
             // Survey location type
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 7,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 7,
                     (String) rowData[7],
                     "java.lang.String", stringCellStyle);
             // Type of establishment
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 8,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 8,
                     (String) rowData[8],
                     "java.lang.String", stringCellStyle);
             // Retail outlet
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 9,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 9,
                     (String) rowData[9],
                     "java.lang.String", stringCellStyle);
             // Date of survey
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 10,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 10,
                     (Date) rowData[10],
                     "java.util.Date", dateCellStyle);
             // Type of port of entry
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 11,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 11,
                     (String) rowData[11],
                     "java.lang.String", stringCellStyle);
             // Port of entry
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 12,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 12,
                     (String) rowData[12],
                     "java.lang.String", stringCellStyle);
             // Inspection point
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 13,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 13,
                     (String) rowData[13],
                     "java.lang.String", stringCellStyle);
             // Broker
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 14,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 14,
                     (String) rowData[14],
                     "java.lang.String", stringCellStyle);
             // Reason for detention
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 15,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 15,
                     (String) rowData[15],
                     "java.lang.String", stringCellStyle);
             // Standards breached
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 16,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 16,
                     (String) rowData[16],
                     "java.lang.String", stringCellStyle);
             // Work progress
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 17,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 17,
                     (String) rowData[17],
                     "java.lang.String", stringCellStyle);
             // Inspectors
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 18,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 18,
                     (String) rowData[18],
                     "java.lang.String", stringCellStyle);
             // Product quantity
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 19,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 19,
                     (BigDecimal) rowData[19],
                     "java.math.BigDecimal", longCellStyle);
             // Profile flagged
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 20,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 20,
                     (String) rowData[20],
                     "java.lang.String", stringCellStyle);
             // Commodity codes
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 21,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 21,
                     (String) rowData[21],
                     "java.lang.String", stringCellStyle);
             // Detentions
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 22,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 22,
                     (BigDecimal) rowData[22],
                     "java.math.BigDecimal", longCellStyle);
             // Destructions
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 23,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 23,
                     (BigDecimal) rowData[23],
                     "java.math.BigDecimal", longCellStyle);
             // Seizures
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 24,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 24,
                     (BigDecimal) rowData[24],
                     "java.math.BigDecimal", longCellStyle);
             // Condemnations
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 25,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 25,
                     (BigDecimal) rowData[25],
                     "java.math.BigDecimal", longCellStyle);
             // Verifications
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 26,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 26,
                     (BigDecimal) rowData[26],
                     "java.math.BigDecimal", longCellStyle);
             // Withdrawals
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 27,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 27,
                     (BigDecimal) rowData[27],
                     "java.math.BigDecimal", longCellStyle);
             row++;
@@ -1906,35 +1917,35 @@ public class ReportManager implements Serializable, AuthenticationListener {
         // Insert data at top of sheet
         // Department name
         Department department = Department.findDepartmentById(em, departmentId);
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 1,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 1,
                 department.getName(),
                 "java.lang.String", stringCellStyle);
         //  Data starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 4,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 4,
                 getMonthlyReportDataDatePeriod().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Data ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 6,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 6,
                 getMonthlyReportDataDatePeriod().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Month starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 8,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 8,
                 getReportingDatePeriod2().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Month ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 10,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 10,
                 getReportingDatePeriod2().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
         // Year type
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 12,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 12,
                 getReportingDatePeriod3().getName(),
                 "java.lang.String", datePeriodsCellStyle);
         //  Year starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 15,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 15,
                 getReportingDatePeriod3().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Year ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 17,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 17,
                 getReportingDatePeriod3().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
     }
@@ -1945,7 +1956,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
             XSSFWorkbook wb) {
 
         int row = 2;
-        XSSFSheet complaintsSheet = wb.getSheet("Complaints");
+        XSSFSheet factoryInspectionsSheet = wb.getSheet("Complaints");
         CreationHelper createHelper = wb.getCreationHelper();
         XSSFCellStyle stringCellStyle = wb.createCellStyle();
         stringCellStyle.setWrapText(true);
@@ -1966,31 +1977,31 @@ public class ReportManager implements Serializable, AuthenticationListener {
         // Fill in report data   
         for (Object[] rowData : reportData) {
             // Job number
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 0,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 0,
                     (String) rowData[0],
                     "java.lang.String", stringCellStyle);
             // Business office
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 1,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 1,
                     (String) rowData[1],
                     "java.lang.String", stringCellStyle);
             // Comments
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 2,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 2,
                     (String) rowData[2],
                     "java.lang.String", stringCellStyle);            
             // Entered by
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 3,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 3,
                     (String) rowData[3],
                     "java.lang.String", stringCellStyle);
             // Date received
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 4,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 4,
                     (Date) rowData[4],
                     "java.util.Date", dateCellStyle);
             // Complaint
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 5,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 5,
                     (String) rowData[5],
                     "java.lang.String", stringCellStyle); 
             // Complainant
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 6,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 6,
                     (String) rowData[6],
                     "java.lang.String", stringCellStyle);
 
@@ -1999,35 +2010,35 @@ public class ReportManager implements Serializable, AuthenticationListener {
         // Insert data at top of sheet
         // Department name
         Department department = Department.findDepartmentById(em, departmentId);
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 1,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 1,
                 department.getName(),
                 "java.lang.String", stringCellStyle);
         //  Data starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 4,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 4,
                 getMonthlyReportDataDatePeriod().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Data ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 6,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 6,
                 getMonthlyReportDataDatePeriod().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Month starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 8,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 8,
                 getReportingDatePeriod2().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Month ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 10,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 10,
                 getReportingDatePeriod2().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
         // Year type
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 12,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 12,
                 getReportingDatePeriod3().getName(),
                 "java.lang.String", datePeriodsCellStyle);
         //  Year starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 15,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 15,
                 getReportingDatePeriod3().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Year ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 17,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 17,
                 getReportingDatePeriod3().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
     }
@@ -2038,7 +2049,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
             XSSFWorkbook wb) {
 
         int row = 2;
-        XSSFSheet complaintsSheet = wb.getSheet("Surveys");
+        XSSFSheet factoryInspectionsSheet = wb.getSheet("Factory Inspections");
         CreationHelper createHelper = wb.getCreationHelper();
         XSSFCellStyle stringCellStyle = wb.createCellStyle();
         stringCellStyle.setWrapText(true);
@@ -2051,7 +2062,7 @@ public class ReportManager implements Serializable, AuthenticationListener {
                 createHelper.createDataFormat().getFormat("yyyy-mm-dd"));
 
         // Set date to now first
-        List<Object[]> reportData = ComplianceSurvey.getReportRecords(
+        List<Object[]> reportData = FactoryInspection.getReportRecords(
                 em,
                 BusinessEntityUtils.getDateString(getReportingDatePeriod1().getStartDate(), "'", "YMD", "-"),
                 BusinessEntityUtils.getDateString(getReportingDatePeriod1().getEndDate(), "'", "YMD", "-"),
@@ -2059,151 +2070,76 @@ public class ReportManager implements Serializable, AuthenticationListener {
         // Fill in report data   
         for (Object[] rowData : reportData) {
             // Job number
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 0,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 0,
                     (String) rowData[0],
                     "java.lang.String", stringCellStyle);
-            // Consignee
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 1,
+            // Assigned inspector
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 1,
                     (String) rowData[1],
                     "java.lang.String", stringCellStyle);
-            // Comments
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 2,
+            // General comments
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 2,
                     (String) rowData[2],
                     "java.lang.String", stringCellStyle);            
             // Business office
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 3,
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 3,
                     (String) rowData[3],
                     "java.lang.String", stringCellStyle);
-            // Entry doc #
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 4,
+            // Manufacturer
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 4,
                     (String) rowData[4],
                     "java.lang.String", stringCellStyle);
-            // Containers
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 5,
-                    (String) rowData[5],
-                    "java.lang.String", stringCellStyle); 
-            // Survey type
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 6,
+            // Inspection date
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 5,
+                    (Date) rowData[5],
+                    "java.util.Date", dateCellStyle); 
+            // Work progress
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 6,
                     (String) rowData[6],
                     "java.lang.String", stringCellStyle);
-            // Survey location type
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 7,
+            // Work in progress
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 7,
                     (String) rowData[7],
-                    "java.lang.String", stringCellStyle);
-            // Type of establishment
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 8,
-                    (String) rowData[8],
-                    "java.lang.String", stringCellStyle);
-            // Retail outlet
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 9,
-                    (String) rowData[9],
-                    "java.lang.String", stringCellStyle);
-            // Date of survey
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 10,
-                    (Date) rowData[10],
-                    "java.util.Date", dateCellStyle);
-            // Type of port of entry
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 11,
-                    (String) rowData[11],
-                    "java.lang.String", stringCellStyle);
-            // Port of entry
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 12,
-                    (String) rowData[12],
-                    "java.lang.String", stringCellStyle);
-            // Inspection point
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 13,
-                    (String) rowData[13],
-                    "java.lang.String", stringCellStyle);
-            // Broker
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 14,
-                    (String) rowData[14],
-                    "java.lang.String", stringCellStyle);
-            // Reason for detention
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 15,
-                    (String) rowData[15],
-                    "java.lang.String", stringCellStyle);
-            // Standards breached
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 16,
-                    (String) rowData[16],
-                    "java.lang.String", stringCellStyle);
-            // Work progress
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 17,
-                    (String) rowData[17],
-                    "java.lang.String", stringCellStyle);
-            // Inspectors
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 18,
-                    (String) rowData[18],
-                    "java.lang.String", stringCellStyle);
+                    "java.lang.String", stringCellStyle);            
             // Product quantity
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 19,
-                    (BigDecimal) rowData[19],
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 8,
+                    (BigDecimal) rowData[8],
                     "java.math.BigDecimal", longCellStyle);
-            // Profile flagged
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 20,
-                    (String) rowData[20],
-                    "java.lang.String", stringCellStyle);
-            // Commodity codes
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 21,
-                    (String) rowData[21],
-                    "java.lang.String", stringCellStyle);
-            // Detentions
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 22,
-                    (BigDecimal) rowData[22],
-                    "java.math.BigDecimal", longCellStyle);
-            // Destructions
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 23,
-                    (BigDecimal) rowData[23],
-                    "java.math.BigDecimal", longCellStyle);
-            // Seizures
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 24,
-                    (BigDecimal) rowData[24],
-                    "java.math.BigDecimal", longCellStyle);
-            // Condemnations
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 25,
-                    (BigDecimal) rowData[25],
-                    "java.math.BigDecimal", longCellStyle);
-            // Verifications
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 26,
-                    (BigDecimal) rowData[26],
-                    "java.math.BigDecimal", longCellStyle);
-            // Withdrawals
-            ReportUtils.setExcelCellValue(wb, complaintsSheet, row, 27,
-                    (BigDecimal) rowData[27],
-                    "java.math.BigDecimal", longCellStyle);
+            
             row++;
         }
         // Insert data at top of sheet
         // Department name
         Department department = Department.findDepartmentById(em, departmentId);
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 1,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 1,
                 department.getName(),
                 "java.lang.String", stringCellStyle);
         //  Data starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 4,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 4,
                 getMonthlyReportDataDatePeriod().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Data ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 6,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 6,
                 getMonthlyReportDataDatePeriod().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Month starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 8,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 8,
                 getReportingDatePeriod2().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Month ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 10,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 10,
                 getReportingDatePeriod2().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
         // Year type
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 12,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 12,
                 getReportingDatePeriod3().getName(),
                 "java.lang.String", datePeriodsCellStyle);
         //  Year starts at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 15,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 15,
                 getReportingDatePeriod3().getStartDate(),
                 "java.util.Date", datePeriodsCellStyle);
         //  Year ends at:
-        ReportUtils.setExcelCellValue(wb, complaintsSheet, 0, 17,
+        ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, 0, 17,
                 getReportingDatePeriod3().getEndDate(),
                 "java.util.Date", datePeriodsCellStyle);
     }
