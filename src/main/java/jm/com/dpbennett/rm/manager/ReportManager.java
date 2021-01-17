@@ -1912,6 +1912,14 @@ public class ReportManager implements Serializable, AuthenticationListener {
             ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 27,
                     (BigDecimal) rowData[27],
                     "java.math.BigDecimal", longCellStyle);
+            // Products
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 28,
+                    (String) rowData[28],
+                    "java.lang.String", stringCellStyle);
+            // Product categories
+            ReportUtils.setExcelCellValue(wb, factoryInspectionsSheet, row, 29,
+                    (String) rowData[29],
+                    "java.lang.String", stringCellStyle);
             row++;
         }
         // Insert data at top of sheet
